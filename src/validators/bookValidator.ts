@@ -13,12 +13,21 @@ export const bookValidator = [
             }
             return true;
         }),
-    body("publishDate").custom(async (date) => {
-        if (date == "") {
+    body("publishDate").custom(async (date: string | null) => {
+        if (date == "" || date === undefined) {
             throw new Error("Date is required.");
         }
         if (moment(date, moment.ISO_8601, true)) {
             throw new Error("Format date not valid.");
+        }
+    }),
+    body("pages").custom(async (pages: number | null) => {
+        if (pages === null) {
+            throw new Error("Pages is required.");
+        }
+
+        if (pages <= 20) {
+            throw new Error("pages must 20 or more.");
         }
     }),
 ];
